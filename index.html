@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CODING WITH GLITCH</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+
+body{
+background:#000;
+color:#00ff99;
+overflow-x:hidden;
+}
+
+/* ================= HACKER INTRO ================= */
+#hackerIntro{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+z-index:9999;
+color:#00ff99;
+}
+
+.glitch{
+font-size:28px;
+font-weight:700;
+position:relative;
+animation:glitch 1s infinite;
+}
+
+@keyframes glitch{
+0%{text-shadow:2px 0 red,-2px 0 blue;}
+25%{text-shadow:-2px 0 red,2px 0 blue;}
+50%{text-shadow:2px 2px red,-2px -2px blue;}
+75%{text-shadow:-2px -2px red,2px 2px blue;}
+100%{text-shadow:2px 0 red,-2px 0 blue;}
+}
+
+#typingText{
+margin-top:15px;
+font-size:14px;
+letter-spacing:2px;
+}
+
+/* ================= MATRIX ================= */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-1;
+}
+
+/* ================= HEADER ================= */
+header{
+text-align:center;
+padding:20px;
+background:rgba(0,0,0,0.7);
+backdrop-filter:blur(10px);
+}
+header h1{font-size:24px;color:#00ff99;}
+header p{font-size:13px;color:#aaa;margin-top:4px;}
+
+.container{padding:15px;}
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:15px;
+}
+
+.product{
+background:rgba(0,255,153,0.05);
+border:1px solid #00ff99;
+border-radius:15px;
+padding:10px;
+transition:.3s;
+}
+.product:hover{
+transform:translateY(-6px);
+box-shadow:0 0 15px #00ff99;
+}
+.product img{
+width:100%;
+height:150px;
+object-fit:cover;
+border-radius:10px;
+}
+.product h3{
+font-size:14px;
+margin:8px 0;
+color:#00ff99;
+}
+.price{font-weight:600;margin-bottom:6px;}
+.product button{
+background:#00ff99;
+color:#000;
+border:none;
+padding:8px;
+border-radius:8px;
+cursor:pointer;
+width:100%;
+}
+
+/* CART */
+.cart-icon{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#00ff99;
+color:#000;
+width:55px;
+height:55px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+cursor:pointer;
+box-shadow:0 0 15px #00ff99;
+}
+.cart-count{
+position:absolute;
+top:-5px;
+right:-5px;
+background:red;
+color:#fff;
+border-radius:50%;
+font-size:11px;
+padding:2px 6px;
+}
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#25D366;
+color:#fff;
+padding:12px 18px;
+border-radius:30px;
+text-decoration:none;
+font-size:13px;
+box-shadow:0 0 15px #25D366;
+}
+
+.cart-modal{
+position:fixed;
+top:0;left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.8);
+display:none;
+align-items:center;
+justify-content:center;
+padding:10px;
+}
+.cart-content{
+background:#111;
+border:1px solid #00ff99;
+border-radius:15px;
+padding:15px;
+width:100%;
+max-width:400px;
+max-height:90%;
+overflow:auto;
+}
+.cart-item{
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
+font-size:13px;
+}
+.cart-item button{padding:2px 6px;}
+.total{font-weight:700;margin-top:10px;}
+
+.checkout-btn{
+background:#00ff99;
+color:#000;
+padding:10px;
+border:none;
+border-radius:8px;
+width:100%;
+margin-top:10px;
+cursor:pointer;
+}
+
+form input,form textarea{
+width:100%;
+padding:8px;
+margin:6px 0;
+background:#000;
+color:#00ff99;
+border:1px solid #00ff99;
+border-radius:6px;
+}
+form button{
+background:#00ff99;
+color:#000;
+padding:10px;
+border:none;
+border-radius:8px;
+width:100%;
+margin-top:10px;
+}
+.confirmation{
+color:#00ff99;
+text-align:center;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HACKER INTRO -->
+<div id="hackerIntro">
+<div class="glitch" data-text="ACCESSING SYSTEM">ACCESSING SYSTEM</div>
+<p id="typingText"></p>
+</div>
+
+<canvas id="matrix"></canvas>
+
+<header>
+<h1>CODING WITH GLITCH</h1>
+<p>BE A CODER LEARN CODING IN SECOUNDS</p>
+<p>📞 7009925064</p>
+</header>
+
+<div class="container">
+<div class="products" id="productList"></div>
+</div>
+
+<div class="cart-icon" onclick="openCart()">
+🛒
+<div class="cart-count" id="cartCount">0</div>
+</div>
+
+<a class="whatsapp" id="whatsappBtn" href="#" target="_blank">
+Chat on WhatsApp
+</a>
+
+<div class="cart-modal" id="cartModal">
+<div class="cart-content">
+<div style="text-align:right;cursor:pointer" onclick="closeCart()">✖</div>
+<div id="cartItems"></div>
+<div class="total" id="cartTotal"></div>
+<button class="checkout-btn" onclick="showCheckout()">Place Order</button>
+<div id="checkoutSection"></div>
+<div id="confirmation" class="confirmation"></div>
+</div>
+</div>
+
+<script>
+
+/* HACKER INTRO */
+const introText="Initializing Secure Coding Environment...";
+let i=0;
+function typeWriter(){
+if(i<introText.length){
+document.getElementById("typingText").innerHTML+=introText.charAt(i);
+i++;
+setTimeout(typeWriter,40);
+}else{
+setTimeout(()=>{
+document.getElementById("hackerIntro").style.opacity="0";
+document.getElementById("hackerIntro").style.transition="1s";
+setTimeout(()=>{
+document.getElementById("hackerIntro").style.display="none";
+},1000);
+},1000);
+}}
+window.onload=typeWriter;
+
+/* MATRIX */
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+const letters="01ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+const drops=[];
+for(let x=0;x<columns;x++) drops[x]=1;
+function draw(){
+ctx.fillStyle="rgba(0,0,0,0.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="#00ff99";
+ctx.font=fontSize+"px monospace";
+for(let i=0;i<drops.length;i++){
+const text=letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+if(drops[i]*fontSize>canvas.height&&Math.random()>0.975) drops[i]=0;
+drops[i]++;
+}}
+setInterval(draw,33);
+
+/* PRODUCTS */
+const products=[
+{name:"Python Coding Basic",price:99,img:"https://i.ibb.co/qMWpJYZd/python-coding-basic.png"},
+{name:"Advance Python Coding",price:200,img:"https://i.ibb.co/N2gShYwL/advance-coding.png"},
+{name:"Master Coding",price:250,img:"https://i.ibb.co/qLgPqbBt/master-coding.png"},
+{name:"Jaking With Python",price:299,img:"https://i.ibb.co/GfrXp09G/jaking-with-python.png"}
+];
+
+let cart=JSON.parse(localStorage.getItem("cart"))||[];
+
+function displayProducts(){
+const list=document.getElementById("productList");
+list.innerHTML="";
+products.forEach(p=>{
+list.innerHTML+=`
+<div class="product">
+<img src="${p.img}" loading="lazy">
+<h3>${p.name}</h3>
+<div class="price">₹${p.price}</div>
+<button onclick="addToCart('${p.name}')">Add to Cart</button>
+</div>`;
+});
+}
+displayProducts();
+
+function addToCart(name){
+const item=products.find(p=>p.name===name);
+const exist=cart.find(c=>c.name===name);
+if(exist) exist.qty++;
+else cart.push({...item,qty:1});
+updateCart();
+}
+
+function updateCart(){
+localStorage.setItem("cart",JSON.stringify(cart));
+document.getElementById("cartCount").innerText=cart.reduce((a,c)=>a+c.qty,0);
+renderCart();
+updateWhatsAppLink();
+}
+
+function renderCart(){
+const box=document.getElementById("cartItems");
+box.innerHTML="";
+let total=0;
+cart.forEach(item=>{
+total+=item.price*item.qty;
+box.innerHTML+=`
+<div class="cart-item">
+<div>${item.name}<br>₹${item.price} x ${item.qty}</div>
+<div>
+<button onclick="changeQty('${item.name}',-1)">-</button>
+<button onclick="changeQty('${item.name}',1)">+</button>
+</div>
+</div>`;
+});
+document.getElementById("cartTotal").innerText="Total: ₹"+total;
+}
+
+function changeQty(name,val){
+const item=cart.find(c=>c.name===name);
+item.qty+=val;
+if(item.qty<=0) cart=cart.filter(c=>c.name!==name);
+updateCart();
+}
+
+function openCart(){document.getElementById("cartModal").style.display="flex"}
+function closeCart(){document.getElementById("cartModal").style.display="none"}
+
+function updateWhatsAppLink(){
+let message="Order Details:%0A";
+let total=0;
+cart.forEach(item=>{
+message+=`${item.name} - ${item.qty} x ₹${item.price}%0A`;
+total+=item.price*item.qty;
+});
+message+=`Total: ₹${total}`;
+document.getElementById("whatsappBtn").href=`https://wa.me/917009925064?text=${message}`;
+}
+
+function showCheckout(){
+if(cart.length===0){alert("Cart is empty");return;}
+let summary="";
+let total=0;
+cart.forEach(item=>{
+summary+=`${item.name} - ${item.qty} x ₹${item.price} = ₹${item.qty*item.price}\n`;
+total+=item.qty*item.price;
+});
+summary+="\nGrand Total: ₹"+total;
+
+document.getElementById("checkoutSection").innerHTML=`
+<form action="https://formspree.io/f/meeldnyb" method="POST" onsubmit="clearCart()">
+<input type="hidden" name="Order Summary" value="${summary}">
+<input type="text" name="Customer Name" placeholder="Your Name" required>
+<input type="text" name="Phone Number" placeholder="Phone Number" required>
+<textarea name="Delivery Address" placeholder="Delivery Address" required></textarea>
+<button type="submit">Submit Order</button>
+</form>`;
+}
+
+function clearCart(){
+localStorage.removeItem("cart");
+cart=[];
+updateCart();
+document.getElementById("confirmation").innerText="Order placed! We will contact you on WhatsApp.";
+}
+
+updateCart();
+</script>
+
+</body>
+</html>
